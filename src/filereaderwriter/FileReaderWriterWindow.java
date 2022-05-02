@@ -4,10 +4,7 @@
  */
 package filereaderwriter;
 
-/**
- *
- * @author novac
- */
+
 public class FileReaderWriterWindow extends javax.swing.JFrame {
 
     /**

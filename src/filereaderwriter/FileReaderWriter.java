@@ -4,47 +4,72 @@
  */
 package filereaderwriter;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.*;
 
-
-/**
- *
- * @author novac
- */
 public class FileReaderWriter {
     
     String filename="list.txt";
     FileReaderWriterWindow window = new FileReaderWriterWindow();
     
+    /**
+     * This is basically my model - a simple array of lines
+     */
+    String [] allLines;
+    
+    /**
+     * Initializes the program
+     */
     public void start() {
         window.setController(this);
-        // try to open the file for reading
         refreshText();
         window.setVisible(true);
     }
     
+    /**
+     * Reads the text from the file and updates the view
+     */
     void refreshText() {
-        String fileText = readFileToLines(filename);
+        String fileText = readFileToString(filename);
+        // Create an array by splitting the string at every new line
+        allLines = fileText.split("\n");
         window.setTextValue(fileText);
     }
     
+    /**
+     * Saves the text typed by the user into the array
+     * and then updates the model
+     * @param text 
+     */
     void save(String text) {
+        allLines = text.split("\n");
         writeTextToFile(text, filename);
     }
     
-    public String readFileToLines(String filename) {
-        String result = "";
+    /**
+     * Read the file and return an array of strings that represents the lines
+     * @param filename
+     * @return 
+     */
+    public String readFileToString(String filename) {
+        String s;
         try {
+           // create a Path object from the filename
            Path p = Paths.get(filename);
-           result = Files.readString(p);
+           // the readString method reads in the whole file as one string
+           s = Files.readString(p);
+
         }catch(IOException e) {
-            result = "File not found";
+            s = "File not found";
         }
-        return result;
+        return s;
     }
     
+    /**
+     * Writes a string to a file, overwriting whatever was there
+     * @param text
+     * @param filename 
+     */
     public void writeTextToFile(String text, String filename) {
         try {
           Path p = Paths.get(filename);
